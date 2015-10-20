@@ -5,7 +5,7 @@
 <% end %>
 <ul class="list-unstyled">
 <%= for post <- @posts do %>
-  <li><a href="<%= post.url %>" target="_blank"><%= post.title %></a> <%= if can_delete_post?(@conn, post) do %><a href="<%= post_path(@conn, :delete, post) %>">[delete]</a><% end %>
+  <li><a href="<%= post.url %>" target="_blank"><%= post.title %></a> <%= if can_delete_post?(@conn, post) do %><a href="<%= post_path(@conn, :delete, post.id) %>">[delete]</a><% end %>
 <br><small>Score: <%= total_score(post) %></small>
   </li>
 <% end %>

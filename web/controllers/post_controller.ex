@@ -10,7 +10,25 @@ defmodule Slackernews.PostController do
 
   def index(conn, _params) do
     posts = Repo.all(
-      from p in Post, order_by: [desc: p.inserted_at]
+      from p in Post,
+      select: %{
+        id: p.id,
+        user_id: p.user_id,
+        title: p.title,
+        url: p.url,
+        downvotes: p.downvotes,
+        upvotes: p.upvotes,
+        total_score: fragment("?-? AS total_score", field(p, :upvotes), field(p, :downvotes))
+      },
+      order_by: [desc: fragment("total_score")]
+    )
+    render conn, "index.html", posts: posts
+  end
+
+  def latest(conn, _params) do
+    posts = Repo.all(
+      from p in Post,
+      order_by: [desc: p.inserted_at]
     )
     render conn, "index.html", posts: posts
   end
@@ -34,7 +52,7 @@ defmodule Slackernews.PostController do
       Repo.insert(changeset)
       conn
       |> put_flash(:info, "Your link has been posted")
-      |> redirect(to: "/")
+      |> redirect(to: post_path(conn, :latest))
     else
       conn
       |> put_flash(:info, "Sorry, some probs")

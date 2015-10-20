@@ -18,6 +18,7 @@ defmodule Slackernews.Router do
     pipe_through :browser # Use the default browser stack
 
     get "/", PostController, :index
+    get "/latest", PostController, :latest
     get "/delete/:id", PostController, :delete
     get "/submit", PostController, :new
     post "/submit", PostController, :create
