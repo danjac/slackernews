@@ -27,7 +27,7 @@ defmodule Slackernews.SessionController do
     |> redirect(to: "/")
   end
 
-  defp sign_in(user, password, conn) when is_nil(user) do
+  defp sign_in(user, _password, conn) when is_nil(user) do
     conn
     |> put_flash(:error, "Sorry, invalid login")
     |> render "new.html", changeset: User.changeset(%User{})

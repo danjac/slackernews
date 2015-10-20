@@ -29,7 +29,6 @@ defmodule Slackernews.Router do
     get "/register", RegisterController, :new
     post "/register", RegisterController, :create
 
-    resource "/comment", CommentController
   end
 
   # Other scopes may use custom stacks.

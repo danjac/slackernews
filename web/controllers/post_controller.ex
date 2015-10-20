@@ -2,6 +2,7 @@ defmodule Slackernews.PostController do
   use Slackernews.Web, :controller
 
   alias Slackernews.Post
+  alias Slackernews.Comment
 
   plug Slackernews.Plug.Authorize when action in [:new, :create, :delete]
   plug :scrub_params, "post" when action in [:create]
@@ -43,7 +44,7 @@ defmodule Slackernews.PostController do
 
   def show(conn, %{"id" => id}) do
     post = Repo.get!(Post, id)
-    render(conn, "show.html", {post: post, comment_changeset: %Comment.changeset{}})
+    render(conn, "show.html", post: post, comment_changeset: Comment.changeset{})
   end
 
   def create_comment(conn, %{"id" => id, "comment" => comment_params}) do
@@ -55,7 +56,7 @@ defmodule Slackernews.PostController do
       {:ok, _comment} ->
         conn
         |> put_flash(:info, "Comment created successfully.")
-        |> redirect(to: comment_path(conn, :index))
+        # |> redirect(to: comment_path(conn, :index))
       {:error, changeset} ->
         render(conn, "show.html", comment_changeset: changeset)
     end

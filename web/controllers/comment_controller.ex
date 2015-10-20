@@ -15,6 +15,6 @@ defmodule Slackernews.CommentController do
 
     conn
     |> put_flash(:info, "Comment deleted successfully.")
-    |> redirect(to: comment_path(conn, :index))
+    #|> redirect(to: comment_path(conn, :index))
   end
 end
